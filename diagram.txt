@@ -1,0 +1,79 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+// Table follows {
+//   following_user_id integer
+//   followed_user_id integer
+//   created_at timestamp 
+// }
+
+// Table users {
+//   id integer [primary key]
+//   username varchar
+//   role varchar
+//   created_at timestamp
+// }
+
+// Table posts {
+//   id integer [primary key]
+//   title varchar
+//   body text [note: 'Content of the post']
+//   user_id integer
+//   status varchar
+//   created_at timestamp
+// }
+
+// Ref: posts.user_id > users.id // many-to-one
+
+// Ref: users.id < follows.following_user_id
+
+// Ref: users.id < follows.followed_user_id
+
+
+
+
+Table transactions {
+  transaction_id integer [primary key]
+  surrogate_product_id integer
+  customer_id integer
+  transaction_date date 
+  online_order bool 
+  order_status varchar(9)
+  list_price float
+  standard_cost float
+}
+
+Table products {
+  surrogate_product_id integer [primary key]
+  product_id integer
+  brand varchar(50)
+  product_line varchar(10)
+  product_size varchar(10)
+}
+
+Table customers {
+  customer_id integer [primary key]
+  first_name text
+  last_name text
+  gender varchar(20)
+  DOB date
+  job_title text
+  job_industry_category varchar(50)
+  // job_title and job_industry_category cant be grouped up in the other table cause same job_title can have different job_industry_category
+  wealth_segment varchar(30)
+  deceased_indicator varchar(10)
+  owns_car bool //todo cast to bool from varchar
+  address text
+  postcode integer
+}
+
+Table postcode_location {
+  postcode integer [primary key]
+  state varchar(50)
+  country varchar(50)
+  property_valuation integer
+}
+
+Ref: transactions.surrogate_product_id > products.surrogate_product_id
+Ref: transactions.customer_id > customers.customer_id
+Ref: customers.postcode > postcode_location.postcode
